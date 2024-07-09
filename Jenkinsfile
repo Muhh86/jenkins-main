@@ -35,6 +35,7 @@ pipeline {
     
     post {
         always {
+            echo "Done."
             // Clean up or finalize actions
         }
     }
