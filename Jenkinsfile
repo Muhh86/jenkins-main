@@ -9,19 +9,8 @@ pipeline {
         stage('Input Decision') {
             steps {
                 script {
-                    // Display input message and options
-                    def userInput = input(
-                        message: "Do you want to display the name '${params.NAME}'?",
-                        parameters: [
-                            choice(
-                                choices: ['Yes', 'No'],
-                                description: 'Choose whether to display the name'
-                            )
-                        ]
-                    )
-                    
                     // Based on user input, decide whether to display the name or not
-                    if (userInput == 'Yes') {
+                    if (userInput) {
                         echo "Name: ${params.NAME}"
                     } else {
                         echo "Name display skipped."
