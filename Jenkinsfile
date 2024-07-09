@@ -4,9 +4,11 @@ pipeline {
         stage('User Input') {
             steps {
                 script {
-                    /* groovylint-disable-next-line LineLength */
-                    def userInput = input(message: 'Enter your name:', parameters: [string(defaultValue: 'Mohammed Alkheliwy', description: 'Name')])
-                    echo "Hello, ${userInput}!"
+                    def userInput = input(
+                        id: 'userInput', message: 'Enter your name:',
+                        parameters: [string(defaultValue: 'Mohammed', description: 'Name')]
+                    )
+                    echo "User input: ${userInput}"
                 }
             }
         }
