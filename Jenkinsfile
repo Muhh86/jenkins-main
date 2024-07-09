@@ -1,16 +1,41 @@
 pipeline {
     agent any
+    
+    parameters {
+        string(name: 'NAME', defaultValue: '', description: 'Enter your name')
+    }
+    
     stages {
-        stage('User Input') {
+        stage('Input Decision') {
             steps {
                 script {
+                    // Display input message and options
                     def userInput = input(
-                        id: 'userInput', message: 'Enter your name:',
-                        parameters: [string(defaultValue: 'Mohammed', description: 'Name')]
+                        message: "Do you want to display the name '${params.NAME}'?",
+                        parameters: [
+                            choice(
+                                choices: ['Yes', 'No'],
+                                description: 'Choose whether to display the name'
+                            )
+                        ]
                     )
-                    echo "User input: ${userInput}"
+                    
+                    // Based on user input, decide whether to display the name or not
+                    if (userInput == 'Yes') {
+                        echo "Name: ${params.NAME}"
+                    } else {
+                        echo "Name display skipped."
+                    }
                 }
             }
+        }
+        
+        // Add more stages as needed
+    }
+    
+    post {
+        always {
+            // Clean up or finalize actions
         }
     }
 }
