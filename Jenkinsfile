@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not
-                    if (userInput) {
+                    if (params.NAME) {
                         echo "Name: ${params.NAME}"
                     } else {
                         echo "Name display skipped."
