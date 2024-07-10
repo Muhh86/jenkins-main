@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not
-                    if (SHOW_NAME) {
+                    if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
                         echo "Name display skipped."
@@ -26,7 +26,8 @@ pipeline {
         }
         stage('Display-Files'){
             steps{
-                sh "ll"
+                echo 'inside (Display-Files)'
+                sh "ls"
             }
         }
         // Add more stages as needed
