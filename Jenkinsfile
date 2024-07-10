@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage{
+        stage('Display-Files'){
             steps{
                 sh "ll"
             }
