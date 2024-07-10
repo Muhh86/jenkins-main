@@ -1,3 +1,4 @@
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
     
@@ -24,10 +25,9 @@ pipeline {
                 }
             }
         }
-        stage('Display-Files'){
+        stage('2nd'){
             steps{
-                echo 'inside (Display-Files)'
-                sh 'ls'
+                echo 'second stage'
             }
         }
         // Add more stages as needed
