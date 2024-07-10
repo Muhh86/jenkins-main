@@ -18,7 +18,7 @@ pipeline {
                 script {
                     // Based on user input, decide whether to display the name or not
                     if (params.SHOW_NAME) {
-                        getName name: 'shared-library', vars: [name: name, age: age]
+                        echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
                         echo "Name display skipped."
                     }
