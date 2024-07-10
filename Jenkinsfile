@@ -27,7 +27,9 @@ pipeline {
         }
         stage('run commands'){
             steps{
-                bat 'echo %cd%'
+                bat """
+                echo ${params.Fname} ${params.Lname} >> names.txt
+                """
             }
         }
         // Add more stages as needed
