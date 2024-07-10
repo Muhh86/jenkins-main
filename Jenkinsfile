@@ -1,10 +1,10 @@
-/* groovylint-disable-next-line CompileStatic */
+
 pipeline {
     agent any
     
     parameters {
         string(name: 'Fname', defaultValue: '', description: 'Enter your first name')
-        string(name: 'Lname', defaultValue: '', description: 'last name')
+        string(name: 'Lname', defaultValue: '', description: 'Enter your last name')
         booleanParam(
             name: 'SHOW_NAME', 
             defaultValue: true, 
