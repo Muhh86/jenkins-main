@@ -25,9 +25,9 @@ pipeline {
                 }
             }
         }
-        stage('2nd'){
+        stage('run commands'){
             steps{
-                echo 'second stage'
+                sh 'pwd'
             }
         }
         // Add more stages as needed
