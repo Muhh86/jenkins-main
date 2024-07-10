@@ -16,7 +16,7 @@ pipeline {
         stage('Input Decision') {
             steps {
                 script {
-                    // Based on user input, decide whether to display the name or not
+                    // Based on user input, decide whether to display the name or not.
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
