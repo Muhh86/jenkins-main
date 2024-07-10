@@ -27,7 +27,7 @@ pipeline {
         }
         stage('run commands'){
             steps{
-                sh 'pwd'
+                bat 'echo %cd%'
             }
         }
         // Add more stages as needed
