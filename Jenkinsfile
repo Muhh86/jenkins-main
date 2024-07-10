@@ -27,7 +27,7 @@ pipeline {
         stage('Display-Files'){
             steps{
                 echo 'inside (Display-Files)'
-                sh "ls"
+                sh 'ls'
             }
         }
         // Add more stages as needed
