@@ -1,5 +1,5 @@
 @Library ('jenkins-shared-lib')_
-import getMyName.getMyName
+import vars.getMyName.getMyName
 
 pipeline {
     agent any
