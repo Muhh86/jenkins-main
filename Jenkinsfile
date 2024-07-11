@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not.
-                    getFile.MyName()
+                    getFile.getMyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
