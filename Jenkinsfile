@@ -1,4 +1,4 @@
-
+@library ('jenkins-shared-lib')_
 pipeline {
     agent any
     
@@ -27,6 +27,7 @@ pipeline {
         }
         stage('run commands'){
             steps{
+                getHelloWorld()
                 bat """
                 echo ${params.Fname} ${params.Lname} >> names.txt
                 """
