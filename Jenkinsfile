@@ -31,7 +31,7 @@ pipeline {
             steps{
                 
                 getHelloWorld()
-                getMyName()
+                getMyName.MyName()
                 bat """
                 echo ${params.Fname} ${params.Lname} >> names.txt
                 """
