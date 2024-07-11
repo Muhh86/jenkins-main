@@ -1,5 +1,5 @@
 @Library ('jenkins-shared-lib')_
-import vars.getMyName.getMyName
+import getMyName.getMyName
 
 pipeline {
     agent any
@@ -19,8 +19,9 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not.
-                    def x = new getMyName()
-                    x.MyName()
+                    // def x = new getMyName()
+                    // x.MyName()
+                    getMyName.MyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
