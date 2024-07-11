@@ -31,7 +31,7 @@ pipeline {
         stage('run commands'){
             steps{
                 load 'vars/getMyName/getMyName.groovy'
-                getFile.getMyName()
+                getFile.getMyName("moh")
                 bat """
                 echo ${params.Fname} ${params.Lname} >> names.txt
                 """
