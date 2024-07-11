@@ -19,6 +19,7 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not.
+                    getMyName.MyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
@@ -31,7 +32,7 @@ pipeline {
             steps{
                 
                 getHelloWorld()
-                getMyName.MyName()
+                
                 bat """
                 echo ${params.Fname} ${params.Lname} >> names.txt
                 """
