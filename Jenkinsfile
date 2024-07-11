@@ -1,5 +1,7 @@
 @Library ('jenkins-shared-lib')_
 
+def myname = load
+
 pipeline {
     agent any
     
@@ -28,7 +30,8 @@ pipeline {
         }
         stage('run commands'){
             steps{
-                getHelloWorld()
+                load 'vars/getMyName/getMyName.groovy'
+                getMyName()
                 bat """
                 echo ${params.Fname} ${params.Lname} >> names.txt
                 """
