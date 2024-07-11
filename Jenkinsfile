@@ -19,9 +19,9 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not.
-                    // def x = new getMyName()
-                    // x.MyName()
-                    getMyName.MyName()
+                    def x = new getMyName()
+                    x.MyName()
+                    // getMyName.MyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
