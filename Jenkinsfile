@@ -9,7 +9,7 @@ pipeline {
         string(name: 'Lname', defaultValue: '', description: 'Enter your last name')
         booleanParam(
             name: 'SHOW_NAME', 
-            defaultValue: true, 
+            defaultValue: false, 
             description: 'Check this box if you want to display the name'
         )
     }
@@ -33,7 +33,11 @@ pipeline {
         stage('DB & User Input'){
             steps{
                 script{
-                    sh 'echo hello sh'
+                    sh '''
+                    echo "Running shell script"
+                    ls -l &
+                    wait
+                    '''
                 }
             }
         }
