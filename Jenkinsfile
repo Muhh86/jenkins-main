@@ -63,9 +63,9 @@ pipeline {
                         "$xml = [xml]$xmlContent; " ^
                         "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
                         "if ($db) { " ^
-                            "$db.databaseName.'#text' = \"$env:DB_name\"; " ^
-                            "$db.databaseIP.'#text' = \"$env:DB_ip\"; " ^
-                            "$db.databasePort.'#text' = \"$env:DB_port\"; " ^
+                            "$db.databaseName = \"$env:DB_name\"; " ^
+                            "$db.databaseIP = \"$env:DB_ip\"; " ^
+                            "$db.databasePort = \"$env:DB_port\"; " ^
                             "$xml.Save(\"$env:XML_FILE\"); " ^
                         "} else { " ^
                             "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
