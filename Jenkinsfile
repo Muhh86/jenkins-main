@@ -54,7 +54,7 @@ pipeline {
 
                     endlocal
                     '''
-                    
+                    input message: 'Click submit to proceed', ok: 'Submit'
                 }
             }
         }
