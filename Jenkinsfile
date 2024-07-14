@@ -66,7 +66,7 @@ pipeline {
                     // Replace old values with new values in the XML content
                     def updatedXmlContent = xmlContent.replaceFirst("<databaseName>${oldDB_name}</databaseName>", "<databaseName>${userInput.newDB_name}</databaseName>")
                                                       .replaceFirst("<databaseIP>${oldDB_ip}</databaseIP>", "<databaseIP>${userInput.newDB_ip}</databaseIP>")
-                                                      .replaceFirst("<databasePort>${oldDB_port}</databasePort>", "<databasePort>${userInput.newDB_port}</databasePort>")
+                                                      .replaceFirst("<databasePort>${oldDB_port}</databasePort>", "<databasePort>${userInput.newDB_port}")
                     
                     // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
