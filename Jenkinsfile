@@ -41,10 +41,12 @@ pipeline {
 
                     echo Checking database configurations in %XML_FILE%
                     powershell -Command ^
-                        "([xml](Get-Content %XML_FILE%)).serverConfig.Database | ForEach-Object { " ^
-                        "Write-Host 'databaseName: ' $_.databaseName;" ^
-                        "Write-Host 'databaseIP:   ' $_.databaseIP;" ^
-                        "Write-Host 'databasePort: ' $_.databasePort;" ^
+                        "$xmlContent = Get-Content %XML_FILE% -Raw; " ^
+                        "$xml = [xml]$xmlContent; " ^
+                        "$xml.serverConfig.Database | ForEach-Object { " ^
+                        "Write-Host 'databaseName: ' $_.databaseName; " ^
+                        "Write-Host 'databaseIP:   ' $_.databaseIP; " ^
+                        "Write-Host 'databasePort: ' $_.databasePort; " ^
                         "Write-Host '' }"
 
                     endlocal
