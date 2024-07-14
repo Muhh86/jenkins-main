@@ -33,22 +33,7 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
-                    def userInput = input(
-                        message: 'Specify Database Configuration',
-                        parameters: [
-                            string(defaultValue: 'ABSHER2_DB', description: 'Would you like to change the database name?', name: 'DB_name', trim: true),
-                            string(defaultValue: '172.31.200.14', description: 'Would you like to change the IP?', name: 'DB_ip', trim: true),
-                            string(defaultValue: '50901', description: 'Would you like to change the port?', name: 'DB_port', trim: true)
-                        ]
-                    )
-                    
-                    // Extract user input values
-                    def DB_name = userInput.DB_name
-                    def DB_ip = userInput.DB_ip
-                    def DB_port = userInput.DB_port
-                    
-                    // Define XML file path
-                    def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
                     // Execute script using bat
                     bat '''
@@ -57,16 +42,15 @@ pipeline {
                     
                     set "XML_FILE=C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
-                    echo Checking specific database configuration in "%XML_FILE%"
+                    echo Reading current database configuration from "%XML_FILE%"
                     powershell -Command ^
                         "$xmlContent = Get-Content \"%XML_FILE%\" -Raw; " ^
                         "$xml = [xml]$xmlContent; " ^
                         "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
                         "if ($db) { " ^
-                            "$db.databaseName = [string]\"$env:DB_name\"; " ^
-                            "$db.databaseIP = [string]\"$env:DB_ip\"; " ^
-                            "$db.databasePort = [string]\"$env:DB_port\"; " ^
-                            "$xml.Save(\"$env:XML_FILE\"); " ^
+                            "$env:OLD_DB_name = $db.databaseName; " ^
+                            "$env:OLD_DB_ip = $db.databaseIP; " ^
+                            "$env:OLD_DB_port = $db.databasePort; " ^
                         "} else { " ^
                             "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
                         "}"
