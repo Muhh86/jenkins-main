@@ -33,14 +33,15 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
-                    // Define XML file path
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
-                    // Read XML content
+                    // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
-                    def xml = new XmlSlurper().parseText(xmlContent)
                     
-                    // Extract current database configuration
+                    // Parse XML using XmlParser
+                    def xml = new XmlParser().parseText(xmlContent)
+                    
+                    // Find and extract current database configuration
                     def currentDB = xml.serverConfig.Database.find { it.@databaseName == 'ABSHER2_DB' }
                     def oldDB_name = currentDB.databaseName.text()
                     def oldDB_ip = currentDB.databaseIP.text()
@@ -67,8 +68,12 @@ pipeline {
                     currentDB.databaseIP.replaceBody(userInput.newDB_ip)
                     currentDB.databasePort.replaceBody(userInput.newDB_port)
                     
-                    // Save updated XML back to file
-                    def updatedXmlContent = XmlUtil.serialize(xml)
+                    // Serialize XML to string
+                    def updatedXmlContent = new StreamingMarkupBuilder().bind {
+                        mkp.yield xml
+                    }.toString()
+                    
+                    // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
                 }
             }
