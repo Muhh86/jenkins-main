@@ -33,8 +33,24 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
+                    def userInput = input(
+                        message: 'Specify Database Configuration',
+                        parameters: [
+                            string(defaultValue: 'ABSHER2_DB', description: 'Would you like to change the database name?', name: 'DB_name', trim: true),
+                            string(defaultValue: '172.31.200.14', description: 'Would you like to change the IP?', name: 'DB_ip', trim: true),
+                            string(defaultValue: '50901', description: 'Would you like to change the port?', name: 'DB_port', trim: true)
+                        ]
+                    )
+                    
+                    // Extract user input values
+                    def DB_name = userInput.DB_name
+                    def DB_ip = userInput.DB_ip
+                    def DB_port = userInput.DB_port
+                    
+                    // Define XML file path
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
+                    // Execute script using bat
                     bat '''
                     @echo off
                     setlocal
@@ -50,7 +66,7 @@ pipeline {
                             "$db.databaseName = \"$env:DB_name\"; " ^
                             "$db.databaseIP = \"$env:DB_ip\"; " ^
                             "$db.databasePort = \"$env:DB_port\"; " ^
-                            "$xml.Save(\"%XML_FILE%\"); " ^
+                            "$xml.Save(\"$env:XML_FILE\"); " ^
                         "} else { " ^
                             "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
                         "}"
