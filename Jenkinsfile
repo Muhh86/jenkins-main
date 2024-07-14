@@ -38,8 +38,8 @@ pipeline {
                     // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
                     
-                    // Parse XML using XmlSlurper
-                    def xml = new XmlSlurper().parseText(xmlContent)
+                    // Parse XML using XmlParser
+                    def xml = new XmlParser().parseText(xmlContent)
                     
                     // Find and extract current database configuration
                     def currentDB = xml.serverConfig.Database.find { it.@databaseName == 'ABSHER2_DB' }
