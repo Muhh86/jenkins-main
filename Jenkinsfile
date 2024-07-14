@@ -33,11 +33,23 @@ pipeline {
         stage('DB & User Input'){
             steps{
                 script{
-                    sh '''
-                    echo "Running shell script"
-                    ls -l &
-                    wait
+                    bat '''
+                    @echo off
+                    setlocal
+
+                    set XML_FILE="%USERPROFILE%\\Desktop\\serverConfig.xml"
+
+                    echo Checking database configurations in %XML_FILE%
+                    powershell -Command ^
+                        "([xml](Get-Content %XML_FILE%)).serverConfig.Database | ForEach-Object { " ^
+                        "Write-Host 'databaseName: ' $_.databaseName;" ^
+                        "Write-Host 'databaseIP:   ' $_.databaseIP;" ^
+                        "Write-Host 'databasePort: ' $_.databasePort;" ^
+                        "Write-Host '' }"
+
+                    endlocal
                     '''
+                    
                 }
             }
         }
