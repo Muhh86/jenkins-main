@@ -30,6 +30,13 @@ pipeline {
                 }
             }
         }
+        stage('DB & User Input'){
+            steps{
+                script{
+                    sh 'echo hello sh'
+                }
+            }
+        }
         stage('run commands'){
             steps{
                 
