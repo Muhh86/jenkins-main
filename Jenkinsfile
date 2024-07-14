@@ -37,7 +37,7 @@ pipeline {
                     @echo off
                     setlocal
 
-                    set XML_FILE="%USERPROFILE%\\Desktop\\serverConfig.xml"
+                    set XML_FILE="%malkheliwy%\\Desktop\\serverConfig.xml"
 
                     echo Checking database configurations in %XML_FILE%
                     powershell -Command ^
