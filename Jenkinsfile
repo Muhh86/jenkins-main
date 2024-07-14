@@ -38,18 +38,14 @@ pipeline {
                     // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
                     
-                    // Find indices of databaseName, databaseIP, and databasePort tags
-                    def nameStartIndex = xmlContent.indexOf('<databaseName>') + '<databaseName>'.length()
-                    def nameEndIndex = xmlContent.indexOf('</databaseName>')
-                    def ipStartIndex = xmlContent.indexOf('<databaseIP>') + '<databaseIP>'.length()
-                    def ipEndIndex = xmlContent.indexOf('</databaseIP>')
-                    def portStartIndex = xmlContent.indexOf('<databasePort>') + '<databasePort>'.length()
-                    def portEndIndex = xmlContent.indexOf('</databasePort>')
+                    // Find indices of databaseName, databaseIP, and databasePort tags for ABSHER2_DB
+                    def abs2StartIndex = xmlContent.indexOf('<databaseName>ABSHER2_DB</databaseName>') + '<databaseName>'.length()
+                    def abs2EndIndex = xmlContent.indexOf('</databasePort>', abs2StartIndex) + '</databasePort>'.length()
                     
                     // Extract old values
-                    def oldDB_name = xmlContent.substring(nameStartIndex, nameEndIndex).trim()
-                    def oldDB_ip = xmlContent.substring(ipStartIndex, ipEndIndex).trim()
-                    def oldDB_port = xmlContent.substring(portStartIndex, portEndIndex).trim()
+                    def oldDB_name = xmlContent.substring(abs2StartIndex, xmlContent.indexOf('</databaseName>', abs2StartIndex)).trim()
+                    def oldDB_ip = xmlContent.substring(xmlContent.indexOf('<databaseIP>', abs2StartIndex) + '<databaseIP>'.length(), xmlContent.indexOf('</databaseIP>', abs2StartIndex)).trim()
+                    def oldDB_port = xmlContent.substring(xmlContent.indexOf('<databasePort>', abs2StartIndex) + '<databasePort>'.length(), abs2EndIndex).trim()
                     
                     // Prompt user for input
                     def userInput = input(
