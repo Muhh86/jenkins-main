@@ -39,15 +39,18 @@ pipeline {
 
                     set XML_FILE="C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
 
-                    echo Checking database configurations in %XML_FILE%
+                    echo Checking specific database configuration in %XML_FILE%
                     powershell -Command ^
                         "$xmlContent = Get-Content %XML_FILE% -Raw; " ^
                         "$xml = [xml]$xmlContent; " ^
-                        "$xml.serverConfig.Database | ForEach-Object { " ^
-                        "Write-Host 'databaseName: ' $_.databaseName; " ^
-                        "Write-Host 'databaseIP:   ' $_.databaseIP; " ^
-                        "Write-Host 'databasePort: ' $_.databasePort; " ^
-                        "Write-Host '' }"
+                        "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
+                        "if ($db -ne $null) { " ^
+                        "Write-Host 'databaseName: ' $db.databaseName; " ^
+                        "Write-Host 'databaseIP:   ' $db.databaseIP; " ^
+                        "Write-Host 'databasePort: ' $db.databasePort; " ^
+                        "} else { " ^
+                        "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
+                        "}"
 
                     endlocal
                     '''
