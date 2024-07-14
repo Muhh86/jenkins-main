@@ -38,14 +38,18 @@ pipeline {
                     // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
                     
-                    // Parse XML using XmlParser
-                    def xml = new XmlParser().parseText(xmlContent)
+                    // Find indices of databaseName, databaseIP, and databasePort tags
+                    def nameStartIndex = xmlContent.indexOf('<databaseName>') + '<databaseName>'.length()
+                    def nameEndIndex = xmlContent.indexOf('</databaseName>')
+                    def ipStartIndex = xmlContent.indexOf('<databaseIP>') + '<databaseIP>'.length()
+                    def ipEndIndex = xmlContent.indexOf('</databaseIP>')
+                    def portStartIndex = xmlContent.indexOf('<databasePort>') + '<databasePort>'.length()
+                    def portEndIndex = xmlContent.indexOf('</databasePort>')
                     
-                    // Find and extract current database configuration
-                    def currentDB = xml.serverConfig.Database.find { it.@databaseName == 'ABSHER2_DB' }
-                    def oldDB_name = currentDB.databaseName.text()
-                    def oldDB_ip = currentDB.databaseIP.text()
-                    def oldDB_port = currentDB.databasePort.text()
+                    // Extract old values
+                    def oldDB_name = xmlContent.substring(nameStartIndex, nameEndIndex).trim()
+                    def oldDB_ip = xmlContent.substring(ipStartIndex, ipEndIndex).trim()
+                    def oldDB_port = xmlContent.substring(portStartIndex, portEndIndex).trim()
                     
                     // Prompt user for input
                     def userInput = input(
@@ -63,13 +67,10 @@ pipeline {
                     echo "  Database IP: ${oldDB_ip}"
                     echo "  Database Port: ${oldDB_port}"
                     
-                    // Update XML with new values
-                    currentDB.databaseName.replaceBody(userInput.newDB_name)
-                    currentDB.databaseIP.replaceBody(userInput.newDB_ip)
-                    currentDB.databasePort.replaceBody(userInput.newDB_port)
-                    
-                    // Serialize XML to string
-                    def updatedXmlContent = groovy.xml.XmlUtil.serialize(xml)
+                    // Replace old values with new values in the XML content
+                    def updatedXmlContent = xmlContent.replaceFirst("<databaseName>${oldDB_name}</databaseName>", "<databaseName>${userInput.newDB_name}</databaseName>")
+                                                      .replaceFirst("<databaseIP>${oldDB_ip}</databaseIP>", "<databaseIP>${userInput.newDB_ip}</databaseIP>")
+                                                      .replaceFirst("<databasePort>${oldDB_port}</databasePort>", "<databasePort>${userInput.newDB_port}</databasePort>")
                     
                     // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
