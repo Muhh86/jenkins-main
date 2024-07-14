@@ -45,17 +45,22 @@ pipeline {
                         "$xml = [xml]$xmlContent; " ^
                         "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
                         "if ($db -ne $null) { " ^
-                        "Write-Host 'databaseName: ' $db.databaseName; " ^
-                        "Write-Host 'databaseIP:   ' $db.databaseIP; " ^
-                        "Write-Host 'databasePort: ' $db.databasePort; " ^
+                            "$db.databaseName = '%DB_name%'; " ^
+                            "$db.databaseIP = '%DB_ip%'; " ^
+                            "$db.databasePort = '%DB_port%'; " ^
+                            "$xml.Save('%XML_FILE%'); " ^
                         "} else { " ^
-                        "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
+                            "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
                         "}"
 
                     endlocal
                     '''
-                    input message: '', parameters: [string(defaultValue: 'ABSHER2_DB', description: 'would you like to change the database name?', name: 'DB_name', trim: true), string(defaultValue: '172.31.200.14', description: 'would you like to change ip', name: 'DB_ip', trim: true), string(defaultValue: '50901', description: 'would you like to change port', name: 'DB_port', trim: true)]
-                    input message: 'Click submit to proceed', ok: 'Submit'
+                    input message: '', parameters: [
+                        string(defaultValue: 'ABSHER2_DB', description: 'would you like to change the database name?', name: 'DB_name', trim: true),
+                        string(defaultValue: '172.31.200.14', description: 'would you like to change ip', name: 'DB_ip', trim: true),
+                        string(defaultValue: '50901', description: 'would you like to change port', name: 'DB_port', trim: true)
+                    ]
+                    input message: 'Are You Sure', ok: 'Submit'
                 }
             }
         }
