@@ -1,5 +1,5 @@
 @Library ('jenkins-shared-lib')_
-// import getMyName.getMyName
+import getMyName.getMyName
 
 pipeline {
     agent any
@@ -19,9 +19,8 @@ pipeline {
             steps {
                 script {
                     // Based on user input, decide whether to display the name or not.
-                    load 'src/getMyName/getMyName.groovy'
-                    def x = getMyName()
-                    echo x
+                    def x = new getMyName()
+                    echo x.MyName()
                     // getMyName.MyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
