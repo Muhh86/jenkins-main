@@ -33,30 +33,43 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
-                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                    // Define XML file path
+                    def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
-                    // Execute script using bat
-                    bat '''
-                    @echo off
-                    setlocal
+                    // Read XML content
+                    def xmlContent = readFile(file: XML_FILE).trim()
+                    def xml = new XmlSlurper().parseText(xmlContent)
                     
-                    set "XML_FILE=C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                    // Extract current database configuration
+                    def currentDB = xml.serverConfig.Database.find { it.@databaseName == 'ABSHER2_DB' }
+                    def oldDB_name = currentDB.databaseName.text()
+                    def oldDB_ip = currentDB.databaseIP.text()
+                    def oldDB_port = currentDB.databasePort.text()
                     
-                    echo Reading current database configuration from "%XML_FILE%"
-                    powershell -Command ^
-                        "$xmlContent = Get-Content \"%XML_FILE%\" -Raw; " ^
-                        "$xml = [xml]$xmlContent; " ^
-                        "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
-                        "if ($db) { " ^
-                            "$env:OLD_DB_name = $db.databaseName; " ^
-                            "$env:OLD_DB_ip = $db.databaseIP; " ^
-                            "$env:OLD_DB_port = $db.databasePort; " ^
-                        "} else { " ^
-                            "Write-Host 'Database with name ABSHER2_DB not found.'; " ^
-                        "}"
+                    // Prompt user for input
+                    def userInput = input(
+                        message: 'Specify New Database Configuration',
+                        parameters: [
+                            string(defaultValue: oldDB_name, description: 'New database name', name: 'newDB_name', trim: true),
+                            string(defaultValue: oldDB_ip, description: 'New database IP', name: 'newDB_ip', trim: true),
+                            string(defaultValue: oldDB_port, description: 'New database port', name: 'newDB_port', trim: true)
+                        ]
+                    )
                     
-                    endlocal
-                    '''
+                    // Log old values
+                    echo "Old Database Configuration:"
+                    echo "  Database Name: ${oldDB_name}"
+                    echo "  Database IP: ${oldDB_ip}"
+                    echo "  Database Port: ${oldDB_port}"
+                    
+                    // Update XML with new values
+                    currentDB.databaseName.replaceBody(userInput.newDB_name)
+                    currentDB.databaseIP.replaceBody(userInput.newDB_ip)
+                    currentDB.databasePort.replaceBody(userInput.newDB_port)
+                    
+                    // Save updated XML back to file
+                    def updatedXmlContent = XmlUtil.serialize(xml)
+                    writeFile file: XML_FILE, text: updatedXmlContent
                 }
             }
         }
