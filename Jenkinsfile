@@ -40,12 +40,16 @@ pipeline {
                     
                     // Find indices of databaseName, databaseIP, and databasePort tags for ABSHER2_DB
                     def abs2StartIndex = xmlContent.indexOf('<databaseName>ABSHER2_DB</databaseName>') + '<databaseName>'.length()
-                    def abs2EndIndex = xmlContent.indexOf('</databasePort>', abs2StartIndex) + '</databasePort>'.length()
+                    def abs2EndIndex = xmlContent.indexOf('</databaseName>', abs2StartIndex)
+                    def ipStartIndex = xmlContent.indexOf('<databaseIP>', abs2StartIndex) + '<databaseIP>'.length()
+                    def ipEndIndex = xmlContent.indexOf('</databaseIP>', ipStartIndex)
+                    def portStartIndex = xmlContent.indexOf('<databasePort>', abs2StartIndex) + '<databasePort>'.length()
+                    def portEndIndex = xmlContent.indexOf('</databasePort>', portStartIndex)
                     
                     // Extract old values
-                    def oldDB_name = xmlContent.substring(abs2StartIndex, xmlContent.indexOf('</databaseName>', abs2StartIndex)).trim()
-                    def oldDB_ip = xmlContent.substring(xmlContent.indexOf('<databaseIP>', abs2StartIndex) + '<databaseIP>'.length(), xmlContent.indexOf('</databaseIP>', abs2StartIndex)).trim()
-                    def oldDB_port = xmlContent.substring(xmlContent.indexOf('<databasePort>', abs2StartIndex) + '<databasePort>'.length(), abs2EndIndex).trim()
+                    def oldDB_name = xmlContent.substring(abs2StartIndex, abs2EndIndex).trim()
+                    def oldDB_ip = xmlContent.substring(ipStartIndex, ipEndIndex).trim()
+                    def oldDB_port = xmlContent.substring(portStartIndex, portEndIndex).trim()
                     
                     // Prompt user for input
                     def userInput = input(
@@ -66,7 +70,7 @@ pipeline {
                     // Replace old values with new values in the XML content
                     def updatedXmlContent = xmlContent.replaceFirst("<databaseName>${oldDB_name}</databaseName>", "<databaseName>${userInput.newDB_name}</databaseName>")
                                                       .replaceFirst("<databaseIP>${oldDB_ip}</databaseIP>", "<databaseIP>${userInput.newDB_ip}</databaseIP>")
-                                                      .replaceFirst("<databasePort>${oldDB_port}</databasePort>", "<databasePort>${userInput.newDB_port}")
+                                                      .replaceFirst("<databasePort>${oldDB_port}</databasePort>", "<databasePort>${userInput.newDB_port}</databasePort>")
                     
                     // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
