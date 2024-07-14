@@ -33,6 +33,11 @@ pipeline {
         stage('DB & User Input'){
             steps{
                 script{
+                    input message: '', parameters: [
+                        string(defaultValue: 'ABSHER2_DB', description: 'would you like to change the database name?', name: 'DB_name', trim: true),
+                        string(defaultValue: '172.31.200.14', description: 'would you like to change ip', name: 'DB_ip', trim: true),
+                        string(defaultValue: '50901', description: 'would you like to change port', name: 'DB_port', trim: true)
+                    ]
                     bat '''
                     @echo off
                     setlocal
@@ -55,11 +60,7 @@ pipeline {
 
                     endlocal
                     '''
-                    input message: '', parameters: [
-                        string(defaultValue: 'ABSHER2_DB', description: 'would you like to change the database name?', name: 'DB_name', trim: true),
-                        string(defaultValue: '172.31.200.14', description: 'would you like to change ip', name: 'DB_ip', trim: true),
-                        string(defaultValue: '50901', description: 'would you like to change port', name: 'DB_port', trim: true)
-                    ]
+                    
                     input message: 'Are You Sure', ok: 'Submit'
                 }
             }
