@@ -33,18 +33,15 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
-                    input message: '', parameters: [
-                        string(defaultValue: 'ABSHER2_DB', description: 'Would you like to change the database name?', name: 'DB_name', trim: true),
-                        string(defaultValue: '172.31.200.14', description: 'Would you like to change the IP?', name: 'DB_ip', trim: true),
-                        string(defaultValue: '50901', description: 'Would you like to change the port?', name: 'DB_port', trim: true)
-                    ]
+                    def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                    
                     bat '''
                     @echo off
                     setlocal
                     
-                    set XML_FILE="C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                    set "XML_FILE=C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
-                    echo Checking specific database configuration in %XML_FILE%
+                    echo Checking specific database configuration in "%XML_FILE%"
                     powershell -Command ^
                         "$xmlContent = Get-Content \"%XML_FILE%\" -Raw; " ^
                         "$xml = [xml]$xmlContent; " ^
