@@ -38,8 +38,8 @@ pipeline {
                     // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
                     
-                    // Parse XML using XmlParser
-                    def xml = new XmlParser().parseText(xmlContent)
+                    // Parse XML using XmlSlurper
+                    def xml = new XmlSlurper().parseText(xmlContent)
                     
                     // Find and extract current database configuration
                     def currentDB = xml.serverConfig.Database.find { it.@databaseName == 'ABSHER2_DB' }
@@ -69,9 +69,7 @@ pipeline {
                     currentDB.databasePort.replaceBody(userInput.newDB_port)
                     
                     // Serialize XML to string
-                    def updatedXmlContent = new StreamingMarkupBuilder().bind {
-                        mkp.yield xml
-                    }.toString()
+                    def updatedXmlContent = groovy.xml.XmlUtil.serialize(xml)
                     
                     // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
