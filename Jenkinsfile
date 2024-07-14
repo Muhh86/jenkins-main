@@ -49,7 +49,7 @@ pipeline {
                         "$xmlContent = Get-Content %XML_FILE% -Raw; " ^
                         "$xml = [xml]$xmlContent; " ^
                         "$db = $xml.serverConfig.Database | Where-Object { $_.databaseName -eq 'ABSHER2_DB' }; " ^
-                        "if ($db -ne $null) { " ^
+                        "if ($db) { " ^
                             "$db.databaseName = '%DB_name%'; " ^
                             "$db.databaseIP = '%DB_ip%'; " ^
                             "$db.databasePort = '%DB_port%'; " ^
