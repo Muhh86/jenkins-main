@@ -40,7 +40,7 @@ pipeline {
                             string(defaultValue: "", description: 'Name of desired database to change', name: 'choiceDB_name', trim: true)
                         ]
                     )
-                    def choiceDB_name2 = userChoice.choiceDB_name
+                    def choiceDB_name2 = "${userChoice.choiceDB_name}"
                     //values
                     def abs2StartIndex = xmlContent.indexOf("<databaseName>${choiceDB_name2}</databaseName>") + '<databaseName>'.length()
                     def abs2EndIndex = xmlContent.indexOf('</databaseName>', abs2StartIndex)
