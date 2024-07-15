@@ -40,13 +40,15 @@ pipeline {
                     matcher.each { match ->
                         databaseNames << match[1]
                     }
+                    def choicesString = databaseNames.join('\n')
                     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
-                            string(name: 'choiceDB_name', choices: databaseNames.join('\n'), description: 'Name of desired database to change')
+                            string($class: 'ChoiceParameterDefinition', name: 'choiceDB_name', choices: choicesString, description: 'Name of desired database to change')
                         ]
                     )
+                    // end of my uncertainty
                     def choiceDB_name2 = "${userChoice}"
                     //values
                     def abs2StartIndex = xmlContent.indexOf("<databaseName>${choiceDB_name2}</databaseName>") + '<databaseName>'.length()
