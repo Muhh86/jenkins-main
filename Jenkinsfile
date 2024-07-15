@@ -35,10 +35,13 @@ pipeline {
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
                     def xmlContent = readFile(file: XML_FILE).trim()
-                    //
-                    def serverConfig = new XmlParser().parseText(xmlContent)
-                    def databaseNames = serverConfig.Database.collect { it.databaseName.text() }
-                    //
+                    // i have no idea what this code is but if it works i won't ask
+                    def databaseNames = []
+                    def matcher = (xmlContent =~ /<databaseName>(.*?)<\/databaseName>/)
+                    matcher.each { match ->
+                        databaseNames << match[1]
+                    }
+                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
