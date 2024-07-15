@@ -45,7 +45,7 @@ pipeline {
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
-                            string($class: 'ChoiceParameterDefinition', name: 'choiceDB_name', choices: choicesString, description: 'Name of desired database to change')
+                            string(name: 'choiceDB_name', defaultValue: '', description: "Name of desired database to change.\nAvailable options:\n${choicesString}")
                         ]
                     )
                     // end of my uncertainty
