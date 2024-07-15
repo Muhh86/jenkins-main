@@ -1,6 +1,16 @@
 @Library ('jenkins-shared-lib')_
 import getMyName.getMyName
 
+
+def getDatabaseNames(xmlContent) {
+    def databaseNames = []
+    def matcher = (xmlContent =~ /<databaseName>(.*?)<\/databaseName>/)
+    matcher.each { match ->
+        databaseNames << match[1]
+    }
+    return databaseNames
+}
+
 pipeline {
     agent any
     
@@ -35,11 +45,7 @@ pipeline {
                     
                     def xmlContent = readFile(file: XML_FILE).trim()
                     // i have no idea what this code is but if it works i won't ask
-                    def databaseNames = []
-                    def matcher = (xmlContent =~ /<databaseName>(.*?)<\/databaseName>/)
-                    matcher.each { match ->
-                        databaseNames << match[1]
-                    }
+                    def databaseNames = getDatabaseNames(xmlContent)
                     def choicesString = databaseNames.join('\n')
                     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     def userChoice = input(
