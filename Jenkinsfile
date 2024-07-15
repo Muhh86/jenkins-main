@@ -44,17 +44,20 @@ pipeline {
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
                     def xmlContent = readFile(file: XML_FILE).trim()
-                    // i have no idea what this code is but if it works i won't ask
+
+
+                    // i have no idea what this code and it's method is but if it works i won't ask
                     def databaseNames = getDatabaseNames(xmlContent)
                     def choicesString = databaseNames.join('\n')
-                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
                             string(name: 'choiceDB_name', defaultValue: '', description: "Name of desired database to change.\nAvailable options:\n${choicesString}")
                         ]
                     )
-                    // end of my uncertainty
                     def choiceDB_name2 = "${userChoice}"
                     //values
                     def abs2StartIndex = xmlContent.indexOf("<databaseName>${choiceDB_name2}</databaseName>") + '<databaseName>'.length()
