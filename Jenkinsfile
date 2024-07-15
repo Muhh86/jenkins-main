@@ -37,7 +37,7 @@ pipeline {
                     def xmlContent = readFile(file: XML_FILE).trim()
                     def userChoice = input(
                         message: 'Name of desired database: '
-                        parameters[
+                        parameters: [
                             string(defaultValue: "", description: 'Name of desired database to change', name: 'DB_name', trim: true)
                         ]
                     )
