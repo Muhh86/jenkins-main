@@ -1,6 +1,5 @@
 @Library ('jenkins-shared-lib')_
 import getMyName.getMyName
-import groovy.xml.XmlParser
 
 pipeline {
     agent any
