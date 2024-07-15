@@ -18,10 +18,8 @@ pipeline {
         stage('Input Decision') {
             steps {
                 script {
-                    // Based on user input, decide whether to display the name or not.
                     def x = new getMyName()
                     echo x.MyName()
-                    // getMyName.MyName()
                     if (params.SHOW_NAME) {
                         echo "Name: ${params.Fname}  ${params.Lname}"
                     } else {
@@ -37,9 +35,15 @@ pipeline {
                     
                     // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
-                    
+                    // def input(
+                    //     message: "Name of desired database: "
+                    //     parameters{
+                    //         string(defaultValue: "", description: 'Name of desired database to change', name: 'DB_name', trim: true)
+                    //     }
+                    // )
+                    def DB_name = "ABSHER2_DB"
                     // Find indices of databaseName, databaseIP, and databasePort tags for ABSHER2_DB
-                    def abs2StartIndex = xmlContent.indexOf('<databaseName>ABSHER2_DB</databaseName>') + '<databaseName>'.length()
+                    def abs2StartIndex = xmlContent.indexOf("<databaseName>${DB_name}</databaseName>") + '<databaseName>'.length()
                     def abs2EndIndex = xmlContent.indexOf('</databaseName>', abs2StartIndex)
                     def ipStartIndex = xmlContent.indexOf('<databaseIP>', abs2StartIndex) + '<databaseIP>'.length()
                     def ipEndIndex = xmlContent.indexOf('</databaseIP>', ipStartIndex)
