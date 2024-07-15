@@ -33,29 +33,26 @@ pipeline {
                 script {
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
-                    // Read XML content using readFile
                     def xmlContent = readFile(file: XML_FILE).trim()
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
-                            string(defaultValue: "", description: 'Name of desired database to change', name: 'DB_name', trim: true)
+                            string(defaultValue: "", description: 'Name of desired database to change', name: 'choiceDB_name', trim: true)
                         ]
                     )
-                    // def DB_name = "ABSHER2_DB"
-                    // Find indices of databaseName, databaseIP, and databasePort tags for ABSHER2_DB
-                    def abs2StartIndex = xmlContent.indexOf("<databaseName>${userChoice.DB_name}</databaseName>") + '<databaseName>'.length()
+                    //values
+                    def abs2StartIndex = xmlContent.indexOf("<databaseName>${userChoice.choiceDB_name}</databaseName>") + '<databaseName>'.length()
                     def abs2EndIndex = xmlContent.indexOf('</databaseName>', abs2StartIndex)
                     def ipStartIndex = xmlContent.indexOf('<databaseIP>', abs2StartIndex) + '<databaseIP>'.length()
                     def ipEndIndex = xmlContent.indexOf('</databaseIP>', ipStartIndex)
                     def portStartIndex = xmlContent.indexOf('<databasePort>', abs2StartIndex) + '<databasePort>'.length()
                     def portEndIndex = xmlContent.indexOf('</databasePort>', portStartIndex)
                     
-                    // Extract old values
+                    //old values
                     def oldDB_name = xmlContent.substring(abs2StartIndex, abs2EndIndex).trim()
                     def oldDB_ip = xmlContent.substring(ipStartIndex, ipEndIndex).trim()
                     def oldDB_port = xmlContent.substring(portStartIndex, portEndIndex).trim()
                     
-                    // Prompt user for input
                     def userInput = input(
                         message: 'Specify New Database Configuration',
                         parameters: [
