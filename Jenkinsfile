@@ -62,7 +62,7 @@ pipeline {
                     )
                     
                     // Log old values
-                    echo "Old Database Configuration:"
+                    echo "Old Database Confg:"
                     echo "  Database Name: ${oldDB_name}"
                     echo "  Database IP: ${oldDB_ip}"
                     echo "  Database Port: ${oldDB_port}"
@@ -74,6 +74,11 @@ pipeline {
                     
                     // Write updated XML back to file
                     writeFile file: XML_FILE, text: updatedXmlContent
+
+                    echo "New Database confg: "
+                    echo " Database Name: ${newDB_name}"
+                    echo " Database IP: ${newDB_ip}"
+                    echo " Database Port: ${newDB_port}"
                 }
             }
         }
