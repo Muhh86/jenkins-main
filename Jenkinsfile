@@ -37,9 +37,9 @@ pipeline {
                     def xmlContent = readFile(file: XML_FILE).trim()
                     def userChoice = input(
                         message: 'Name of desired database: '
-                        parameters{
+                        parameters[
                             string(defaultValue: "", description: 'Name of desired database to change', name: 'DB_name', trim: true)
-                        }
+                        ]
                     )
                     // def DB_name = "ABSHER2_DB"
                     // Find indices of databaseName, databaseIP, and databasePort tags for ABSHER2_DB
