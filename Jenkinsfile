@@ -1,5 +1,6 @@
 @Library ('jenkins-shared-lib')_
 import getMyName.getMyName
+import groovy.xml.XmlParser
 
 pipeline {
     agent any
@@ -34,10 +35,14 @@ pipeline {
                     def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                     
                     def xmlContent = readFile(file: XML_FILE).trim()
+                    //
+                    def serverConfig = new XmlParser().parseText(xmlContent)
+                    def databaseNames = serverConfig.Database.collect { it.databaseName.text() }
+                    //
                     def userChoice = input(
                         message: 'Name of desired database: ',
                         parameters: [
-                            string(defaultValue: "", description: 'Name of desired database to change', name: 'choiceDB_name', trim: true)
+                            string(name: 'choiceDB_name', choices: databaseNames.join('\n'), description: 'Name of desired database to change')
                         ]
                     )
                     def choiceDB_name2 = "${userChoice}"
