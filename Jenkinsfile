@@ -132,7 +132,7 @@ pipeline {
                                             
                                             // validate DROP and DELETE
                                             if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
-                                                echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
+                                                error "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
                                             } else {
                                                 echo "File content:"
                                                 echo fileContent
