@@ -117,8 +117,9 @@ pipeline {
 
                         echo "Constructed source path: ${sourcePath}"
                         def dirExists = bat script: "if exist \"${sourcePath}\" (exit 0) else (exit 1)", returnStatus: true
-                        echo "Directory exists: ${dirExists}"
+                        
                         if (dirExists == 0){
+                            echo "Directory exists"
                             def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
                             files.each { file ->
                                 stage("Processing ${file}") {
