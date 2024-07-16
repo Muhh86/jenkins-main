@@ -114,24 +114,23 @@ pipeline {
                         echo "${dbscript}"
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
                         echo "Constructed source path: ${sourcePath}" 
-                                               
+
                         if (sourcePath) {
                             echo "Directory exists"
                             def filesOutput = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim()
                             def files = filesOutput.split('\n').collect { it.trim() }
                             
-                            // Generate stages dynamically
                             def stages = [:]
                             files.each { file ->
-                                if (file.endsWith('.txt')) {  // Only process .txt files
+                                if (file.endsWith('.txt')) {
                                     stages["Process ${file}"] = {
                                         stage("Processing ${file}") {
                                             echo "Processing file: ${file}"
                                             
-                                            // Read file content
+                                            // read file content
                                             def fileContent = bat(script: "type \"${sourcePath}\\${file}\"", returnStdout: true).trim()
                                             
-                                            // Check for DELETE or DROP
+                                            // validate DROP and DELETE
                                             if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
                                                 echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
                                             } else {
@@ -144,7 +143,6 @@ pipeline {
                                 }
                             }
                             
-                            // Execute the dynamically generated stages in parallel
                             parallel stages
                             
                         } else {
