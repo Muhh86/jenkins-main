@@ -115,7 +115,7 @@ pipeline {
                         echo "${dbscript}"
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
 
-                        def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
+                        // def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
                         echo "i'm here"
                         def checkDir = bat(script: "if exist \"${sourcePath}\" (echo Directory exists) else (echo Directory does not exist)", returnStdout: true).trim()
                         echo "im also here"
