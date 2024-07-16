@@ -101,19 +101,18 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Database Migration"){
-            steps{
-                script{
+        stage("Database Migration") {
+            steps {
+                script {
                     def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
-                    
+
                     // Read the YAML file
                     def yamlContent = readYaml file: yamlFilePath
-                    
-                    def dbscript = yamlContent.dbscripts
 
-                    def DBcounter = 1
-                    if (yamlContent != null){
-                        echo "${yamlContent}"
+                    def dbscript = yamlContent.dbscripts[0]
+
+                    if (dbscript) {
+                        echo "${dbscript}"
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
 
                         def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
@@ -125,12 +124,14 @@ pipeline {
                                         // Execute any commands or scripts you need to run for each file
                                         echo "Processing file: ${file}"
                                         // Example: print the content of each file
-                                        bat "type \"${sourcePath}/${file}\""
+                                        bat "type \"${sourcePath}\\${file}\""
                                         echo "Processing of ${file} successful"
                                     }
                                 }
                             }
                         }
+                    } else {
+                        echo "No valid dbscript entry found in YAML."
                     }
                 }
             }
