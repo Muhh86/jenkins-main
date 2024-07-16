@@ -124,13 +124,13 @@ pipeline {
                             files.each { file ->
                                 stage("Processing ${file}") {
                                     steps {
-                                        script {
-                                            // Execute any commands or scripts you need to run for each file
-                                            echo "Processing file: ${file}"
-                                            // Example: print the content of each file
-                                            bat "type \"${sourcePath}\\${file}\""
-                                            echo "Processing of ${file} successful"
-                                        }
+                                        
+                                        // Execute any commands or scripts you need to run for each file
+                                        echo "Processing file: ${file}"
+                                        // Example: print the content of each file
+                                        bat "type \"${sourcePath}\\${file}\""
+                                        echo "Processing of ${file} successful"
+                                    
                                     }
                                 }
                             }
