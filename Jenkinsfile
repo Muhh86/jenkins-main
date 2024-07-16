@@ -109,12 +109,12 @@ pipeline {
                     // Read the YAML file
                     def yamlContent = readYaml file: yamlFilePath
                     
-                    def dbscripts = yamlContent.dbscripts
+                    def dbscript = yamlContent.dbscripts
 
                     def DBcounter = 1
                     if (yamlContent != null){
                         def yamlSource = script.source
-                        echo 'yamlSource'
+                        echo dir(dbscript.source)
                     }
                 }
             }
