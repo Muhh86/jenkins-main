@@ -115,23 +115,28 @@ pipeline {
                         echo "${dbscript}"
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
 
-                        // def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
                         echo "Constructed source path: ${sourcePath}"
                         def dirExists = bat script: "if exist \"${sourcePath}\" (exit 0) else (exit 1)", returnStatus: true
                         echo "Directory exists: ${dirExists}"
-                        files.each { file ->
-                            stage("Processing ${file}") {
-                                steps {
-                                    script {
-                                        // Execute any commands or scripts you need to run for each file
-                                        echo "Processing file: ${file}"
-                                        // Example: print the content of each file
-                                        bat "type \"${sourcePath}\\${file}\""
-                                        echo "Processing of ${file} successful"
+                        if (dirExists == 0){
+                            def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
+                            files.each { file ->
+                                stage("Processing ${file}") {
+                                    steps {
+                                        script {
+                                            // Execute any commands or scripts you need to run for each file
+                                            echo "Processing file: ${file}"
+                                            // Example: print the content of each file
+                                            bat "type \"${sourcePath}\\${file}\""
+                                            echo "Processing of ${file} successful"
+                                        }
                                     }
                                 }
                             }
+                        } else{
+                            echo "Directory does not exist : ${sourcePath}"
                         }
+                        
                     } else {
                         echo "No valid dbscript entry found in YAML."
                     }
