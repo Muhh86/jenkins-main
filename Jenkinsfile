@@ -113,7 +113,7 @@ pipeline {
 
                     if (dbscript) {
                         echo "${dbscript}"
-                        def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf/sql${dbscript.source}"
+                        def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
 
                         // def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
                         echo "Constructed source path: ${sourcePath}"
