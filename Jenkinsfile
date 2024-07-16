@@ -115,25 +115,21 @@ pipeline {
                     if (yamlContent != null){
                         echo "${yamlContent}"
                         def DBscriptsPath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
-                        dir(DBscriptsPath) {
-                            // Get the list of files in the directory
-                            echo "i made it here"
-                            def files = bat(script: 'dir /b', returnStdout: true).trim().split('\r\n')
-                            echo "${files}"
-                            files.each { file ->
-                                stage("Processing ${file}") {
-                                    steps {
-                                        script {
-                                            // Execute any commands or scripts you need to run for each file
-                                            echo "Processing file: ${file}"
-                                            // Example: print the content of each file
-                                            bat "type ${file}"
-                                            echo "Processing of ${file} successful"
-                                        }
+
+                        def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
+
+                        files.each { file ->
+                            stage("Processing ${file}") {
+                                steps {
+                                    script {
+                                        // Execute any commands or scripts you need to run for each file
+                                        echo "Processing file: ${file}"
+                                        // Example: print the content of each file
+                                        bat "type \"${sourcePath}/${file}\""
+                                        echo "Processing of ${file} successful"
                                     }
                                 }
                             }
-                        }
                     }
                 }
             }
