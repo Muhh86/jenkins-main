@@ -116,10 +116,9 @@ pipeline {
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
 
                         // def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
-                        echo "i'm here"
-                        def checkDir = bat(script: "if exist \"${sourcePath}\" (echo Directory exists) else (echo Directory does not exist)", returnStdout: true).trim()
-                        echo "im also here"
-                        echo "path: ${checkDir}"
+                        echo "Constructed source path: ${sourcePath}"
+                        def dirExists = bat script: "if exist \"${sourcePath}\" (exit 0) else (exit 1)", returnStatus: true
+                        echo "Directory exists: ${dirExists}"
                         files.each { file ->
                             stage("Processing ${file}") {
                                 steps {
