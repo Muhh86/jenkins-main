@@ -116,14 +116,12 @@ pipeline {
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
                         
                         echo "Constructed source path: ${sourcePath}"
-                        def dirExists = bat(script: "if exist \"${sourcePath}\" (exit 0) else (exit 1)", returnStatus: true)
                         
-                        if (dirExists == 0) {
+                        if (sourcePath) {
                             echo "Directory exists"
                             def filesOutput = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim()
                             def files = filesOutput.split('\n').collect { it.trim() }
                             
-                            // Generate stages dynamically
                             def stages = [:]
                             files.each { file ->
                                 if (file.endsWith('.txt')) {  // Only process .txt files
@@ -137,7 +135,6 @@ pipeline {
                                 }
                             }
                             
-                            // Execute the dynamically generated stages in parallel
                             parallel stages
                             
                         } else {
