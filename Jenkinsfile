@@ -130,9 +130,9 @@ pipeline {
                                     }
                                 }
                             }
-                        }
-                    // Execute the dynamically generated stages in parallel
-                    parallel stages
+                            
+                            // Execute the dynamically generated stages in parallel
+                            parallel stages
                         } else{
                             echo "Directory does not exist : ${sourcePath}"
                         }
