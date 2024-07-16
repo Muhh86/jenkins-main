@@ -101,6 +101,19 @@ pipeline {
                 }
             }
         }
+        stage("Database Migration"){
+            steps{
+                script{
+                    def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
+                    
+                    // Read the YAML file
+                    def yamlContent = readYaml file: yamlFilePath
+                    
+                    // Print the contents of the YAML file
+                    echo "YAML Content: ${yamlContent}"
+                }
+            }
+        }
         stage('run commands'){
             steps{
                 
