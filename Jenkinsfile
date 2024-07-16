@@ -114,7 +114,7 @@ pipeline {
                     def DBcounter = 1
                     if (yamlContent != null){
                         echo "${yamlContent}"
-                        def DBscriptsPath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
+                        def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
 
                         def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
 
