@@ -114,7 +114,8 @@ pipeline {
                     def DBcounter = 1
                     if (yamlContent != null){
                         echo "${yamlContent}"
-                        dir("C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}") {
+                        def DBscriptsPath = "C:/Users/malkheliwy/Desktop/BirthCertificateService/conf${dbscript.source}"
+                        dir(DBscriptsPath) {
                             // Get the list of files in the directory
                             echo "i made it here"
                             def files = bat(script: 'dir /b', returnStdout: true).trim().split('\r\n')
