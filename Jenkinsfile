@@ -121,19 +121,19 @@ pipeline {
                         if (dirExists == 0){
                             echo "Directory exists"
                             def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
+                            def stages = [:]
                             files.each { file ->
-                                stage("Processing ${file}") {
-                                    steps {
-                                        
-                                        // Execute any commands or scripts you need to run for each file
+                                stages["Process ${file}"] = {
+                                    stage("Processing ${file}") {
                                         echo "Processing file: ${file}"
-                                        // Example: print the content of each file
                                         bat "type \"${sourcePath}\\${file}\""
                                         echo "Processing of ${file} successful"
-                                    
                                     }
                                 }
                             }
+                    
+                    // Execute the dynamically generated stages in parallel
+                    parallel stages
                         } else{
                             echo "Directory does not exist : ${sourcePath}"
                         }
