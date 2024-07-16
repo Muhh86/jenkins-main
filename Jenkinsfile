@@ -113,7 +113,24 @@ pipeline {
 
                     def DBcounter = 1
                     if (yamlContent != null){
-                        echo dir(dbscript.source)
+                        dir(dbscript.source) {
+                            // Get the list of files in the directory
+                            def files = bat(script: 'dir /b', returnStdout: true).trim().split('\r\n')
+                            
+                            files.each { file ->
+                                stage("Processing ${file}") {
+                                    steps {
+                                        script {
+                                            // Execute any commands or scripts you need to run for each file
+                                            echo "Processing file: ${file}"
+                                            // Example: print the content of each file
+                                            bat "type ${file}"
+                                            echo "Processing of ${file} successful"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
