@@ -105,35 +105,42 @@ pipeline {
             steps {
                 script {
                     def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
-
+                    
                     // Read the YAML file
                     def yamlContent = readYaml file: yamlFilePath
-
+                    
                     def dbscript = yamlContent.dbscripts[0]
-
+                    
                     if (dbscript) {
                         echo "${dbscript}"
                         def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
-
-                        echo "Constructed source path: ${sourcePath}"
                         
-                        if (sourcePath){
+                        echo "Constructed source path: ${sourcePath}"
+                        def dirExists = bat(script: "if exist \"${sourcePath}\" (exit 0) else (exit 1)", returnStatus: true)
+                        
+                        if (dirExists == 0) {
                             echo "Directory exists"
-                            def files = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim().split('\r\n')
+                            def filesOutput = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim()
+                            def files = filesOutput.split('\n').collect { it.trim() }
+                            
+                            // Generate stages dynamically
                             def stages = [:]
                             files.each { file ->
-                                stages["Process ${file}"] = {
-                                    stage("Processing ${file}") {
-                                        echo "Processing file: ${file}"
-                                        bat "type \"${sourcePath}\\${file}\""
-                                        echo "Processing of ${file} successful"
+                                if (file.endsWith('.txt')) {  // Only process .txt files
+                                    stages["Process ${file}"] = {
+                                        stage("Processing ${file}") {
+                                            echo "Processing file: ${file}"
+                                            bat "type \"${sourcePath}\\${file}\""
+                                            echo "Processing of ${file} successful"
+                                        }
                                     }
                                 }
                             }
                             
                             // Execute the dynamically generated stages in parallel
                             parallel stages
-                        } else{
+                            
+                        } else {
                             echo "Directory does not exist : ${sourcePath}"
                         }
                         
