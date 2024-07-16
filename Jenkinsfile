@@ -124,16 +124,25 @@ pipeline {
                             
                             def stages = [:]
                             files.each { file ->
-                                if (file.endsWith('.txt')) {  // Only process .txt files
-                                    stages["Process ${file}"] = {
-                                        stage("Processing ${file}") {
-                                            echo "Processing file: ${file}"
-                                            bat "type \"${sourcePath}\\${file}\""
-                                            echo "Processing of ${file} successful"
-                                        }
+                        if (file.endsWith('.txt')) {  // Only process .txt files
+                            stages["Process ${file}"] = {
+                                stage("Processing ${file}") {
+                                    echo "Processing file: ${file}"
+                                    
+                                    // Read file content
+                                    def fileContent = bat(script: "type \"${sourcePath}\\${file}\"", returnStdout: true).trim()
+                                    
+                                    // Check for DELETE or DROP
+                                    if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
+                                        echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
+                                    } else {
+                                        echo "File content:"
+                                        echo fileContent
+                                        echo "Processing of ${file} successful"
                                     }
                                 }
                             }
+                        }
                             
                             parallel stages
                             
