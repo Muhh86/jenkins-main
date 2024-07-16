@@ -113,7 +113,6 @@ pipeline {
 
                     def DBcounter = 1
                     if (yamlContent != null){
-                        def yamlSource = script.source
                         echo dir(dbscript.source)
                     }
                 }
