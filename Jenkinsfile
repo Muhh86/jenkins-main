@@ -132,6 +132,7 @@ pipeline {
                                             
                                             // validate DROP and DELETE
                                             if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
+                                                //error should be here insted of echo
                                                 echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
                                             } else {
                                                 echo "File content:"
@@ -167,7 +168,7 @@ pipeline {
         }
         stage('Run Shell Commands') {
             steps {
-                bat '"C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "echo Hello from sh"'
+                bat '"C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "ls"'
             }
 }
         // Add more stages as needed
