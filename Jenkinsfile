@@ -166,15 +166,6 @@ pipeline {
                 """
             }
         }
-        stage('Run Shell Commands') {
-            steps {
-                bat """
-                    @echo off
-                    
-                    "C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "ls"
-                """
-            }
-        }
         
         // Add more stages as needed
     }
