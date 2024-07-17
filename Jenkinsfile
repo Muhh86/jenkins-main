@@ -166,6 +166,15 @@ pipeline {
                 """
             }
         }
+        stage('Run Shell Commands') {
+            steps {
+                bat """
+                    @echo off
+                    
+                    "C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "echo Hello from Git Bash"
+                """
+            }
+        }
         
         // Add more stages as needed
     }
