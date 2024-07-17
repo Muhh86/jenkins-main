@@ -171,7 +171,7 @@ pipeline {
                 bat """
                     @echo off
                     
-                    "C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "echo Hello from Git Bash"
+                    "C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\git-bash.exe" -c "ls"
                 """
             }
         }
