@@ -31,11 +31,7 @@ pipeline {
     
     stages {
 
-        stage('Verify Git') {
-            steps {
-                bat 'git --version'
-            }
-        }
+        
 
         stage('Clean Workspace') {
             steps {
