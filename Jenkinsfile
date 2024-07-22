@@ -14,11 +14,6 @@ def getDatabaseNames(xmlContent) {
 pipeline {
     agent any
 
-    environment {
-        // Initialize BUILD_NUMBER_BASE to 0 if it doesn't exist
-        BUILD_NUMBER_BASE = "${env.BUILD_NUMBER_BASE ?: 0}"
-    }
-
     tools {
         maven 'Maven 3.9.8'
     }
@@ -64,7 +59,7 @@ pipeline {
                             mvn deploy:deploy-file \
                             -DgroupId=test.devops \
                             -DartifactId=MavenJavaTest \
-                            -Dversion=1.0.${BUILD_NUMBER_BASE} \
+                            -Dversion=1.0.${env.BUILD_NUMBER} \
                             -Dpackaging=jar \
                             -Dfile=target/MavenJavaTest-1.0.jar \
                             -DrepositoryId=nexus-releases \
@@ -223,11 +218,7 @@ pipeline {
     
     post {
         success {
-            script {
-                env.BUILD_NUMBER_BASE = "${env.BUILD_NUMBER_BASE.toInteger() + 1}"
-            }
-            echo "Build and deployment of version 1.0.${BUILD_NUMBER_BASE} successful!"
-        }
+            echo "Build and deployment of version 1.0.${env.BUILD_NUMBER} successful!"        }
         failure {
             echo "Build or deployment failed!"
         }
