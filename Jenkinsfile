@@ -41,7 +41,7 @@ pipeline {
             steps {
                 dir('MavenJavaTest') {
                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                        bat 'mvn deploy'
+                        bat 'mvn deploy -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml'
                     }
                 }
             }
