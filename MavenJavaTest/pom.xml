@@ -17,6 +17,7 @@
   </dependencies>
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -31,6 +32,12 @@
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0-M7</version>
       </plugin>
     </plugins>
   </build>
@@ -48,5 +55,10 @@
     </repository>
 
   </distributionManagement>
-
+    <scm>
+      <connection>scm:git:https://github.com/Muhh86/jenkins-main.git</connection>
+      <developerConnection>scm:git:https://github.com/Muhh86/jenkins-main.git</developerConnection>
+      <url>https://github.com/Muhh86/jenkins-main.git</url>
+      <tag>HEAD</tag>
+    </scm>
 </project>
