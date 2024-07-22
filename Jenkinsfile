@@ -45,14 +45,16 @@ pipeline {
 
         stage('Build') {
             steps {
+                def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
+                if (lastSuccessfulBuild) {
+                    env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
+                } else {
+                    env.BUILD_NUMBER_BASE = '0'
+                }
+                
                 dir('MavenJavaTest') {
                     bat 'mvn clean package'
-                    def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
-                    if (lastSuccessfulBuild) {
-                        env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
-                    } else {
-                        env.BUILD_NUMBER_BASE = '0'
-                    }
+                    
                     // Increment the BUILD_NUMBER_BASE for this build
                     env.BUILD_NUMBER_BASE = (env.BUILD_NUMBER_BASE.toInteger() + 1).toString()
                 }
@@ -73,6 +75,7 @@ pipeline {
                             -Durl=http://localhost:8081/repository/maven-releases/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                         """
+                        //u can change the major version number by modifing the numbers before the BUILD_NUMBER_BASE abeve
                     }
                 }
             }
