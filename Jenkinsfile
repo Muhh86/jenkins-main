@@ -40,7 +40,7 @@ pipeline {
         stage('Release') {
             steps {
                 dir('MavenJavaTest') {  // Change directory to where the Maven project is
-                    withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         bat """
                             mvn release:prepare release:perform -B \
                             -DdevelopmentVersion=1.1-SNAPSHOT \
