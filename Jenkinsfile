@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 dir('MavenJavaTest') {
-                    withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         bat 'mvn deploy'
                     }
                 }
@@ -122,61 +122,61 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Database Migration") {
-            steps {
-                script {
-                    def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
+        // stage("Database Migration") {
+        //     steps {
+        //         script {
+        //             def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
                     
-                    // Read the YAML file
-                    def yamlContent = readYaml file: yamlFilePath
-                    def dbscript = yamlContent.dbscripts[0]
+        //             // Read the YAML file
+        //             def yamlContent = readYaml file: yamlFilePath
+        //             def dbscript = yamlContent.dbscripts[0]
                     
-                    if (dbscript) {
-                        echo "${dbscript}"
-                        def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
-                        echo "Constructed source path: ${sourcePath}" 
+        //             if (dbscript) {
+        //                 echo "${dbscript}"
+        //                 def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
+        //                 echo "Constructed source path: ${sourcePath}" 
 
-                        if (sourcePath) {
-                            echo "Directory exists"
-                            def filesOutput = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim()
-                            def files = filesOutput.split('\n').collect { it.trim() }
+        //                 if (sourcePath) {
+        //                     echo "Directory exists"
+        //                     def filesOutput = bat(script: "dir /b \"${sourcePath}\"", returnStdout: true).trim()
+        //                     def files = filesOutput.split('\n').collect { it.trim() }
                             
-                            def stages = [:]
-                            files.each { file ->
-                                if (file.endsWith('.txt')) {
-                                    stages["Process ${file}"] = {
-                                        stage("Processing ${file}") {
-                                            echo "Processing file: ${file}"
+        //                     def stages = [:]
+        //                     files.each { file ->
+        //                         if (file.endsWith('.txt')) {
+        //                             stages["Process ${file}"] = {
+        //                                 stage("Processing ${file}") {
+        //                                     echo "Processing file: ${file}"
                                             
-                                            // read file content
-                                            def fileContent = bat(script: "type \"${sourcePath}\\${file}\"", returnStdout: true).trim()
+        //                                     // read file content
+        //                                     def fileContent = bat(script: "type \"${sourcePath}\\${file}\"", returnStdout: true).trim()
                                             
-                                            // validate DROP and DELETE
-                                            if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
-                                                //error should be here insted of echo
-                                                echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
-                                            } else {
-                                                echo "File content:"
-                                                echo fileContent
-                                                echo "Processing of ${file} successful"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+        //                                     // validate DROP and DELETE
+        //                                     if (fileContent.toUpperCase().contains("DELETE") || fileContent.toUpperCase().contains("DROP")) {
+        //                                         //error should be here insted of echo
+        //                                         echo "WARNING: File ${file} contains DELETE or DROP statements. Skipping execution."
+        //                                     } else {
+        //                                         echo "File content:"
+        //                                         echo fileContent
+        //                                         echo "Processing of ${file} successful"
+        //                                     }
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
                             
-                            parallel stages
+        //                     parallel stages
                             
-                        } else {
-                            echo "Directory does not exist : ${sourcePath}"
-                        }
+        //                 } else {
+        //                     echo "Directory does not exist : ${sourcePath}"
+        //                 }
                         
-                    } else {
-                        echo "No valid dbscript entry found in YAML."
-                    }
-                }
-            }
-        }
+        //             } else {
+        //                 echo "No valid dbscript entry found in YAML."
+        //             }
+        //         }
+        //     }
+        // }
         stage('run commands'){
             steps{
                 
