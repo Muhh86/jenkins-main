@@ -39,19 +39,21 @@ pipeline {
         }
         stage('Release') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                bat """
-                    mvn release:prepare release:perform -B \
-                    -DdevelopmentVersion=1.1-SNAPSHOT \
-                    -DreleaseVersion=${env.BUILD_NUMBER} \
-                    -DscmCommentPrefix="[JENKINS] " \
-                    -DskipTests -DskipITs \
-                    -Darguments="-DskipTests -DskipITs" \
-                    -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
-                """
+                dir('MavenJavaTest') {  // Change directory to where the Maven project is
+                    withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                        bat """
+                            mvn release:prepare release:perform -B \
+                            -DdevelopmentVersion=1.1-SNAPSHOT \
+                            -DreleaseVersion=${env.BUILD_NUMBER}.0 \
+                            -DscmCommentPrefix="[JENKINS] " \
+                            -DskipTests -DskipITs \
+                            -Darguments="-DskipTests -DskipITs" \
+                            -s C:\\ProgramData\\Jenkins\\.m2\\settings.xml
+                        """
+                    }
                 }
             }
-            }
+        }
         stage('Input Decision') {
             steps {
                 script {
