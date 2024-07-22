@@ -14,9 +14,13 @@ def getDatabaseNames(xmlContent) {
 pipeline {
     agent any
     
+    environment {
+        // Increment this manually for each release
+        PROJECT_VERSION = '1.0'
+    }
+
     tools {
         maven 'Maven 3.9.8'
-        git 'Default'
     }
 
     parameters {
@@ -45,11 +49,6 @@ pipeline {
             }
         }
 
-        stage('Verify Git') {
-            steps {
-                bat 'git --version'
-            }
-        }
 
         stage('Build') {
             steps {
