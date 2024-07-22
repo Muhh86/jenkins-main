@@ -13,11 +13,6 @@ def getDatabaseNames(xmlContent) {
 
 pipeline {
     agent any
-    
-    environment {
-        // Increment this manually for each release
-        PROJECT_VERSION = '1.0'
-    }
 
     tools {
         maven 'Maven 3.9.8'
@@ -31,11 +26,10 @@ pipeline {
             defaultValue: false, 
             description: 'Check this box if you want to display the name'
         )
+        
     }
     
     stages {
-
-        
 
         stage('Clean Workspace') {
             steps {
@@ -49,11 +43,18 @@ pipeline {
             }
         }
 
-
         stage('Build') {
             steps {
                 dir('MavenJavaTest') {
                     bat 'mvn clean package'
+                    def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
+                    if (lastSuccessfulBuild) {
+                        env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
+                    } else {
+                        env.BUILD_NUMBER_BASE = '0'
+                    }
+                    // Increment the BUILD_NUMBER_BASE for this build
+                    env.BUILD_NUMBER_BASE = (env.BUILD_NUMBER_BASE.toInteger() + 1).toString()
                 }
             }
         }
@@ -65,9 +66,9 @@ pipeline {
                             mvn deploy:deploy-file \
                             -DgroupId=test.devops \
                             -DartifactId=MavenJavaTest \
-                            -Dversion=${PROJECT_VERSION} \
+                            -Dversion=1.0.${BUILD_NUMBER_BASE} \
                             -Dpackaging=jar \
-                            -Dfile=target/MavenJavaTest-${PROJECT_VERSION}.jar \
+                            -Dfile=target/MavenJavaTest-1.0.jar \
                             -DrepositoryId=nexus-releases \
                             -Durl=http://localhost:8081/repository/maven-releases/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
@@ -222,9 +223,14 @@ pipeline {
     }
     
     post {
-        always {
-            echo "Done."
-            // Clean up or finalize actions
+        success {
+            script {
+                env.BUILD_NUMBER_BASE = "${env.BUILD_NUMBER_BASE.toInteger() + 1}"
+            }
+            echo "Build and deployment of version 1.0.${BUILD_NUMBER_BASE} successful!"
+        }
+        failure {
+            echo "Build or deployment failed!"
         }
     }
 }
