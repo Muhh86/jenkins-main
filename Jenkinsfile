@@ -42,6 +42,12 @@ pipeline {
             }
         }
 
+        stage('Verify Git') {
+            steps {
+                bat 'git --version'
+            }
+        }
+
         stage('Build') {
             steps {
                 dir('MavenJavaTest') {
