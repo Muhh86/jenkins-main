@@ -62,13 +62,14 @@ pipeline {
                 dir('MavenJavaTest') {  // Change directory to where the Maven project is
                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         bat """
-                            mvn release:prepare release:perform -B \
-                            -DpreparationGoals="clean verify" \
-                            -DdevelopmentVersion=1.1-SNAPSHOT \
-                            -DreleaseVersion=${env.BUILD_NUMBER}.0 \
-                            -DscmCommentPrefix="[JENKINS] " \
-                            -DskipTests -DskipITs \
-                            -Darguments="-DskipTests -DskipITs" \
+                            mvn deploy:deploy-file \
+                            -DgroupId=test.devops \
+                            -DartifactId=MavenJavaTest \
+                            -Dversion=${PROJECT_VERSION} \
+                            -Dpackaging=jar \
+                            -Dfile=target/MavenJavaTest-${PROJECT_VERSION}.jar \
+                            -DrepositoryId=nexus-releases \
+                            -Durl=http://localhost:8081/repository/maven-releases/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                         """
                     }
