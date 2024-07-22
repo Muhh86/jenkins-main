@@ -14,12 +14,9 @@ def getDatabaseNames(xmlContent) {
 pipeline {
     agent any
     
-    environment {
-        GIT_PATH = 'C:\\Users\\malkheliwy\\AppData\\Local\\Programs\\Git\\cmd\\git.exe'
-    }
-
     tools {
         maven 'Maven 3.9.8'
+        git 'Default'
     }
 
     parameters {
@@ -48,7 +45,7 @@ pipeline {
 
         stage('Verify Git') {
             steps {
-                bat '"${GIT_PATH}" --version'
+                bat 'git --version'
             }
         }
 
