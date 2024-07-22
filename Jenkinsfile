@@ -14,6 +14,10 @@ def getDatabaseNames(xmlContent) {
 pipeline {
     agent any
     
+    tools {
+        maven 'Maven 3.9.8'
+    }
+
     parameters {
         string(name: 'Fname', defaultValue: '', description: 'Enter your first name')
         string(name: 'Lname', defaultValue: '', description: 'Enter your last name')
@@ -25,6 +29,20 @@ pipeline {
     }
     
     stages {
+
+        stage('Build') {
+            steps {
+                // Run Maven build
+                bat 'mvn clean package'
+            }
+        }
+        stage('Deploy to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                    bat 'mvn deploy'
+                }
+            }
+        }
         stage('Input Decision') {
             steps {
                 script {
