@@ -14,6 +14,11 @@ def getDatabaseNames(xmlContent) {
 pipeline {
     agent any
 
+    environment {
+        // Initialize BUILD_NUMBER_BASE to 0 if it doesn't exist
+        BUILD_NUMBER_BASE = "${env.BUILD_NUMBER_BASE ?: 0}"
+    }
+
     tools {
         maven 'Maven 3.9.8'
     }
@@ -43,30 +48,11 @@ pipeline {
             }
         }
 
-        stage('Set Build Number') {
-            steps {
-                script {
-                    // Retrieve the BUILD_NUMBER_BASE from the last successful build, or start at 0
-                    def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
-                    if (lastSuccessfulBuild) {
-                        env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
-                    } else {
-                        env.BUILD_NUMBER_BASE = '0'
-                    }
-                    // Increment the BUILD_NUMBER_BASE for this build
-                    env.BUILD_NUMBER_BASE = (env.BUILD_NUMBER_BASE.toInteger() + 1).toString()
-                    echo "Current BUILD_NUMBER_BASE: ${env.BUILD_NUMBER_BASE}"
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 dir('MavenJavaTest') {
                     bat 'mvn clean package'
                     
-                    // Increment the BUILD_NUMBER_BASE for this build
-                    env.BUILD_NUMBER_BASE = (env.BUILD_NUMBER_BASE.toInteger() + 1).toString()
                 }
             }
         }
@@ -85,7 +71,7 @@ pipeline {
                             -Durl=http://localhost:8081/repository/maven-releases/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                         """
-                        //u can change the major version number by modifing the numbers before the BUILD_NUMBER_BASE abeve
+                        //you can change the major version number by modifing the numbers before the BUILD_NUMBER_BASE abeve
                     }
                 }
             }
