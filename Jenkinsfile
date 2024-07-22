@@ -29,6 +29,11 @@ pipeline {
     }
     
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
 
         stage('Build') {
             steps {
@@ -43,6 +48,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         bat """
                             mvn release:prepare release:perform -B \
+                            -DpreparationGoals="clean verify" \
                             -DdevelopmentVersion=1.1-SNAPSHOT \
                             -DreleaseVersion=${env.BUILD_NUMBER}.0 \
                             -DscmCommentPrefix="[JENKINS] " \
