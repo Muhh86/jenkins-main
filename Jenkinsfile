@@ -47,7 +47,7 @@ pipeline {
                     -DscmCommentPrefix="[JENKINS] " \
                     -DskipTests -DskipITs \
                     -Darguments="-DskipTests -DskipITs" \
-                    -s C:\\ProgramData\\Jenkins\\.m2\\settings.xml
+                    -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                 """
                 }
             }
