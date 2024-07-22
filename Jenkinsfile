@@ -31,6 +31,30 @@ pipeline {
     
     stages {
 
+        stage('Debug Environment') {
+            steps {
+                bat 'echo %PATH%'
+                bat 'where git'
+                bat 'git --version'
+            }
+        }
+
+        stage('Git Operations') {
+            steps {
+                dir('MavenJavaTest') {
+                    bat 'git status'
+                    bat 'git config --list'
+                    bat 'git rev-parse --is-inside-work-tree'
+                }
+            }
+        }
+
+        stage('Maven Version') {
+            steps {
+                bat 'mvn --version'
+            }
+        }
+
         stage('Clean Workspace') {
             steps {
                 cleanWs()
