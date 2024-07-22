@@ -31,27 +31,9 @@ pipeline {
     
     stages {
 
-        stage('Debug Environment') {
+        stage('Verify Git') {
             steps {
-                bat 'echo %PATH%'
-                bat 'where git'
                 bat 'git --version'
-            }
-        }
-
-        stage('Git Operations') {
-            steps {
-                dir('MavenJavaTest') {
-                    bat 'git status'
-                    bat 'git config --list'
-                    bat 'git rev-parse --is-inside-work-tree'
-                }
-            }
-        }
-
-        stage('Maven Version') {
-            steps {
-                bat 'mvn --version'
             }
         }
 
