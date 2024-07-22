@@ -43,15 +43,25 @@ pipeline {
             }
         }
 
+        stage('Set Build Number') {
+            steps {
+                script {
+                    // Retrieve the BUILD_NUMBER_BASE from the last successful build, or start at 0
+                    def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
+                    if (lastSuccessfulBuild) {
+                        env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
+                    } else {
+                        env.BUILD_NUMBER_BASE = '0'
+                    }
+                    // Increment the BUILD_NUMBER_BASE for this build
+                    env.BUILD_NUMBER_BASE = (env.BUILD_NUMBER_BASE.toInteger() + 1).toString()
+                    echo "Current BUILD_NUMBER_BASE: ${env.BUILD_NUMBER_BASE}"
+                }
+            }
+        }
+
         stage('Build') {
             steps {
-                def lastSuccessfulBuild = currentBuild.previousSuccessfulBuild
-                if (lastSuccessfulBuild) {
-                    env.BUILD_NUMBER_BASE = lastSuccessfulBuild.getNumber().toString()
-                } else {
-                    env.BUILD_NUMBER_BASE = '0'
-                }
-                
                 dir('MavenJavaTest') {
                     bat 'mvn clean package'
                     
