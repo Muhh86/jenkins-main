@@ -16,6 +16,7 @@ pipeline {
     
     tools {
         maven 'Maven 3.9.8'
+        git 'Default'
     }
 
     parameters {
