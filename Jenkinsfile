@@ -32,14 +32,17 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Run Maven build
-                bat 'mvn clean package'
+                dir('MavenJavaTest') {
+                    bat 'mvn clean package'
+                }
             }
         }
         stage('Deploy to Nexus') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    bat 'mvn deploy'
+                dir('MavenJavaTest') {
+                    withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                        bat 'mvn deploy'
+                    }
                 }
             }
         }
