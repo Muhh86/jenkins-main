@@ -26,6 +26,11 @@ pipeline {
             defaultValue: false, 
             description: 'Check this box if you want to display the name'
         )
+        booleanParam(
+            name: 'Snapshot', 
+            defaultValue: true, 
+            description: 'Uncheck if it''s a release'
+        )
         
     }
     
@@ -53,20 +58,39 @@ pipeline {
         }
         stage('Release') {
             steps {
-                dir('MavenJavaTest') {  // Change directory to where the Maven project is
-                    withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                script{
+                    if (!params.Snapshot){
+                        dir('MavenJavaTest') {  // Change directory to where the Maven project is
+                            withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                                bat """
+                                    mvn deploy:deploy-file \
+                                    -DgroupId=test.devops \
+                                    -DartifactId=MavenJavaTest \
+                                    -Dversion=1.0.${env.BUILD_NUMBER} \
+                                    -Dpackaging=jar \
+                                    -Dfile=target/MavenJavaTest-1.0.jar \
+                                    -DrepositoryId=nexus-releases \
+                                    -Durl=http://localhost:8081/repository/maven-releases/ \
+                                    -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
+                                """
+                                //you can change the major version number by modifing the numbers before the BUILD_NUMBER_BASE above
+
+
+                            }
+                        }
+                    }
+                    else{
                         bat """
                             mvn deploy:deploy-file \
                             -DgroupId=test.devops \
                             -DartifactId=MavenJavaTest \
-                            -Dversion=1.0.${env.BUILD_NUMBER} \
+                            -Dversion=1.0-SNAPSHOT \
                             -Dpackaging=jar \
                             -Dfile=target/MavenJavaTest-1.0.jar \
-                            -DrepositoryId=nexus-releases \
-                            -Durl=http://localhost:8081/repository/maven-releases/ \
+                            -DrepositoryId=nexus-snapshots \
+                            -Durl=http://localhost:8081/repository/maven-snapshots/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                         """
-                        //you can change the major version number by modifing the numbers before the BUILD_NUMBER_BASE abeve
                     }
                 }
             }
