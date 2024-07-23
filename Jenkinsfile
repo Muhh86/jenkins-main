@@ -80,7 +80,8 @@ pipeline {
                         }
                     }
                     else{
-                        bat """
+                        dir('MavenJavaTest'){
+                            bat """
                             mvn deploy:deploy-file \
                             -DgroupId=test.devops \
                             -DartifactId=MavenJavaTest \
@@ -91,6 +92,7 @@ pipeline {
                             -Durl=http://localhost:8081/repository/maven-snapshots/ \
                             -s C:\\Users\\malkheliwy\\Desktop\\nexus-3.70.1-02\\system\\settings.xml
                         """
+                        }
                     }
                 }
             }
