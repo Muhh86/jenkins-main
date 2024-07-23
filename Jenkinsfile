@@ -29,7 +29,7 @@ pipeline {
         booleanParam(
             name: 'Snapshot', 
             defaultValue: true, 
-            description: 'Uncheck if it''s a release'
+            description: 'Uncheck if its a release'
         )
         
     }
