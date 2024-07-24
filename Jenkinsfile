@@ -240,6 +240,11 @@ pipeline {
                 """
             }
         }
+        stage('Trigger Another Pipeline') {
+            steps {
+                build job: 'testPipeline'
+            }
+        }
         
         // Add more stages as needed
     }
