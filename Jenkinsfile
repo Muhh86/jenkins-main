@@ -64,9 +64,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('MavenJavaTest') {
-                    bat 'mvn clean package'
-                    
+                script{
+                    if (params.Build_Release){
+                        dir('MavenJavaTest') {
+                            bat 'mvn clean package'
+                            
+                        }
+                    }
                 }
             }
         }
