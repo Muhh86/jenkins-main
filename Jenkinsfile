@@ -277,7 +277,6 @@ pipeline {
                 body: "Please find attached the employee CSV file.",
                 to: "m.alkheliwy@gmail.com",
                 attachmentsPattern: "employees.csv"
-                debugMode: true
             )  
         }
         failure {
