@@ -118,7 +118,13 @@ pipeline {
                 script {
                     // Read the input file and convert to CSV using PowerShell
                     bat '''
-                        powershell -Command "(Get-Content employees.txt) -replace '\\|', ',' | Set-Content employees.csv -Encoding UTF8"
+                        @echo off
+                        setlocal enabledelayedexpansion
+                        (for /f "delims=" %%a in (employees.txt) do (
+                            set "line=%%a"
+                            set "line=!line:|=	!"
+                            echo !line!
+                        )) > employees.tsv
                     '''
                 }
             }
