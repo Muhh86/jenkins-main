@@ -116,6 +116,8 @@ pipeline {
         stage('Convert to CSV') {
             steps {
                 script {
+                    bat 'del employees.csv'
+                    
                     //Read the input file and convert to CSV using PowerShell
                     bat '''
                         @echo off
@@ -136,7 +138,7 @@ pipeline {
                     // '''
 
                     // bat 'cscript //nologo convert.vbs'
-                    // bat 'del employees.csv'
+                    
                 }
             }
         }

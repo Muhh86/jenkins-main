@@ -1,4 +1,5 @@
 Name|Age|City|Occupation
+
 John Doe|35|New York|Engineer
 Jane Smith|28|San Francisco|Designer
 Mike Johnson|42|Chicago|Manager
