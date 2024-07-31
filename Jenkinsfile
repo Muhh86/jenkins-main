@@ -1,3 +1,5 @@
+//gmail app key : cspz qrbz qhzl uomg
+
 @Library ('jenkins-shared-lib')_
 
 import getMyName.getMyName
@@ -32,6 +34,12 @@ pipeline {
             defaultValue: true, 
             description: 'Uncheck if its a release'
         )
+        booleanParam(
+            name: 'Convert_txt_to_cvs', 
+            defaultValue: false, 
+            description: 'converts the file "employees.txt to employees.cvs" and emails it'
+        )
+
         
     }
     
@@ -116,18 +124,20 @@ pipeline {
         stage('Convert to CSV') {
             steps {
                 script {
-                    bat 'del employees.csv'
+                    if (params.Convert_txt_to_cvs){
+                        bat 'del employees.csv'
 
-                    //Read the input file and convert to CSV using PowerShell
-                    bat '''
-                        @echo off
-                        setlocal enabledelayedexpansion
-                        (for /f "delims=" %%a in (employees.txt) do (
-                            set "line=%%a"
-                            set "line=!line:|=,!"
-                            echo !line!
-                        )) > employees.csv
-                    '''
+                        //input file and convert to CSV using PowerShell
+                        bat '''
+                            @echo off
+                            setlocal enabledelayedexpansion
+                            (for /f "delims=" %%a in (employees.txt) do (
+                                set "line=%%a"
+                                set "line=!line:|=,!"
+                                echo !line!
+                            )) > employees.csv
+                        '''
+                    } else {echo "skipped convertion to cvs"}
                 }
             }
         }
