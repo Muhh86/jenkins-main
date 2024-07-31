@@ -116,16 +116,16 @@ pipeline {
         stage('Convert to CSV') {
             steps {
                 script {
-                    // Read the input file and convert to CSV using PowerShell
-                    // bat '''
-                    //     @echo off
-                    //     setlocal enabledelayedexpansion
-                    //     (for /f "delims=" %%a in (employees.txt) do (
-                    //         set "line=%%a"
-                    //         set "line=!line:|=,!"
-                    //         echo !line!
-                    //     )) > employees.csv
-                    // '''
+                    //Read the input file and convert to CSV using PowerShell
+                    bat '''
+                        @echo off
+                        setlocal enabledelayedexpansion
+                        (for /f "delims=" %%a in (employees.txt) do (
+                            set "line=%%a"
+                            set "line=!line:|=,!"
+                            echo !line!
+                        )) > employees.csv
+                    '''
                     // writeFile file: 'convert.vbs', text: '''
                     //     Set objExcel = CreateObject("Excel.Application")
                     //     objExcel.Visible = False
@@ -136,7 +136,7 @@ pipeline {
                     // '''
 
                     // bat 'cscript //nologo convert.vbs'
-                    bat 'del employees.csv'
+                    // bat 'del employees.csv'
                 }
             }
         }
