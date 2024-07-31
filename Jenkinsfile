@@ -122,10 +122,20 @@ pipeline {
                         setlocal enabledelayedexpansion
                         (for /f "delims=" %%a in (employees.txt) do (
                             set "line=%%a"
-                            set "line=!line:|=	!"
+                            set "line=!line:|=,!"
                             echo !line!
-                        )) > employees.tsv
+                        )) > employees.csv
                     '''
+                    writeFile file: 'convert.vbs', text: '''
+                        Set objExcel = CreateObject("Excel.Application")
+                        objExcel.Visible = False
+                        Set objWorkbook = objExcel.Workbooks.Open("employees.csv")
+                        objWorkbook.SaveAs "employees.xls", 56
+                        objWorkbook.Close False
+                        objExcel.Quit
+                    '''
+
+                    bat 'cscript //nologo convert.vbs'
                 }
             }
         }
