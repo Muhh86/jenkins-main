@@ -1,9 +1,5 @@
 @Library ('jenkins-shared-lib')_
-@Grab('org.apache.poi:poi:5.2.3')
-@Grab('org.apache.poi:poi-ooxml:5.2.3')
 
-import org.apache.poi.ss.usermodel.*
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import getMyName.getMyName
 
 
@@ -117,6 +113,17 @@ pipeline {
                 }
             }
         }
+        stage('Convert to CSV') {
+            steps {
+                script {
+                    // Read the input file and convert to CSV using PowerShell
+                    bat '''
+                        powershell -Command "(Get-Content employees.txt) -replace '\\|', ',' | Set-Content employees.csv -Encoding UTF8"
+                    '''
+                }
+            }
+        }
+    
         // stage('DB & User Input'){
         //     steps {
         //         script {
