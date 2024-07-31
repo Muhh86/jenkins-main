@@ -117,7 +117,7 @@ pipeline {
             steps {
                 script {
                     bat 'del employees.csv'
-                    
+
                     //Read the input file and convert to CSV using PowerShell
                     bat '''
                         @echo off
@@ -128,17 +128,6 @@ pipeline {
                             echo !line!
                         )) > employees.csv
                     '''
-                    // writeFile file: 'convert.vbs', text: '''
-                    //     Set objExcel = CreateObject("Excel.Application")
-                    //     objExcel.Visible = False
-                    //     Set objWorkbook = objExcel.Workbooks.Open("employees.csv")
-                    //     objWorkbook.SaveAs "employees.xls", 56
-                    //     objWorkbook.Close False
-                    //     objExcel.Quit
-                    // '''
-
-                    // bat 'cscript //nologo convert.vbs'
-                    
                 }
             }
         }
@@ -286,5 +275,11 @@ pipeline {
         failure {
             echo "Build or deployment failed!"
         }
+        emailext (
+                subject: "Employee CSV File",
+                body: "Please find attached the employee CSV file.",
+                to: "m.alkheliwy@gmail.com",
+                attachmentsPattern: "employees.csv"
+            )
     }
 }
