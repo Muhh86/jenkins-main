@@ -136,7 +136,7 @@ pipeline {
                     // '''
 
                     // bat 'cscript //nologo convert.vbs'
-                    bat 'del convert.vbs'
+                    bat 'del employees.csv'
                 }
             }
         }
