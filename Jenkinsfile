@@ -281,15 +281,17 @@ pipeline {
     
     post {
         success {
-            echo "Build and deployment of version 1.0.${env.BUILD_NUMBER} successful!"   
-            if (params.Convert_txt_to_cvs){ 
-                emailext (
-                    subject: "Employee CSV File",
-                    body: "Please find attached the employee CSV file.",
-                    to: "m.alkheliwy@gmail.com",
-                    attachmentsPattern: "employees.csv"
-                )
-            }  
+            script{
+                echo "Build and deployment of version 1.0.${env.BUILD_NUMBER} successful!"
+                if (params.Convert_txt_to_cvs){ 
+                    emailext (
+                        subject: "Employee CSV File",
+                        body: "Please find attached the employee CSV file.",
+                        to: "m.alkheliwy@gmail.com",
+                        attachmentsPattern: "employees.csv"
+                    )
+                } 
+            } 
         }
         failure {
             echo "Build or deployment failed!"
