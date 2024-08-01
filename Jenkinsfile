@@ -166,7 +166,7 @@ pipeline {
         stage('DB & User Input'){
             steps {
                 script {
-                    if (Database_choice){
+                    if (params.Database_choice){
                         def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
                         
                         def xmlContent = readFile(file: XML_FILE).trim()
@@ -231,7 +231,7 @@ pipeline {
         stage("Database Migration") {
             steps {
                 script {
-                    if (Database_choice){
+                    if (params.Database_choice){
                         def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
                         
                         // Read the YAML file
@@ -298,7 +298,7 @@ pipeline {
         stage('Trigger Another Pipeline') {
             steps {
                 script{
-                    if (TriggerPipeline){
+                    if (params.TriggerPipeline){
                         build job: 'testPipeline'
                     }
                 }
