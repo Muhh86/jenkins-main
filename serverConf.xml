@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<serverConfig>
+  <Database>
+    <databaseName>ABSHER_DB</databaseName>
+    <databaseIP>172.31.200.2132423</databaseIP>
+    <databasePort>5090243423</databasePort>
+  </Database>
+  <Database>
+    <databaseName>ABSHER2_DBDFAS</databaseName>
+    <databaseIP>172.31.200.12</databaseIP>
+    <databasePort>50900</databasePort>
+  </Database>
+  <Database>
+    <databaseName>ABSHER3_DB</databaseName>
+    <databaseIP>172.31.200.15</databaseIP>
+    <databasePort>50921</databasePort>
+  </Database>
+</serverConfig>

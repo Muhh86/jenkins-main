@@ -167,7 +167,7 @@ pipeline {
             steps {
                 script {
                     if (params.Database_choice){
-                        def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\serverConf.xml"
+                        def XML_FILE = "C:\\Users\\malkheliwy\\Desktop\\Jenkins\\jenkins-main\\serverConf.xml"
                         
                         def xmlContent = readFile(file: XML_FILE).trim()
 
@@ -232,7 +232,7 @@ pipeline {
             steps {
                 script {
                     if (params.Database_choice){
-                        def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\BirthCertificateService\\conf\\depCfg.yml'
+                        def yamlFilePath = 'C:\\Users\\malkheliwy\\Desktop\\Jenkins\\jenkins-main\\BirthCertificateService\\conf\\depCfg.yml'
                         
                         // Read the YAML file
                         def yamlContent = readYaml file: yamlFilePath
@@ -240,7 +240,7 @@ pipeline {
                         
                         if (dbscript) {
                             echo "${dbscript}"
-                            def sourcePath = "C:/Users/malkheliwy/Desktop/BirthCertificateService${dbscript.source}"
+                            def sourcePath = "C:/Users/malkheliwy/Desktop/Jenkins/jenkins-main/BirthCertificateService${dbscript.source}"
                             echo "Constructed source path: ${sourcePath}" 
 
                             if (sourcePath) {

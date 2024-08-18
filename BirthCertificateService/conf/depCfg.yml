@@ -1,0 +1,4 @@
+dbscripts:
+  - source: /conf/sql/Release_1.0.0
+    database: ABSHER2_DB
+    schema: Test
